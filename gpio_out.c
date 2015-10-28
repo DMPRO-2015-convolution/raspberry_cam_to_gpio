@@ -1,24 +1,15 @@
-#include <time.h>
 #include "rpgpio.h"
 
-#define T_NS 100
-#define SLEEP_HALF_T() nanosleep((const struct timespec[]){{0, T_NS}}, NULL)
+#define CLK_PIN 11
 
 int main(int argc, char **argv)
 {
     // Set up gpi pointer for direct register access
     setup_io();
 
-#define CLK_PIN 11
     int PINS[] = {
-        2,  // bit 0
-        3,  // bit 1
-        4,  // bit 2
-        17, // bit 3
-        27, // bit 4
-        22, // bit 5
-        10, // bit 6
-        9,  // bit 7
+        // bits from least to most significant are mapped to pins numbered
+        9, 10, 22, 27, 17, 4, 3, 2,
         CLK_PIN
     };
     int N_PINS = 9;
@@ -28,15 +19,16 @@ int main(int argc, char **argv)
     }
 
     unsigned char color;
-    while(read(STDIN_FILENO, &color, 1)) {
+    int i;
+    while(1) {
+        read(STDIN_FILENO, &color, 1);
+
         GPIO_SET = 1 << CLK_PIN;
-        for (int i = 0; i < N_PINS - 1; i++) {
+        for (i = 0; i < N_PINS - 1; i++) {
             GPIO_CLR = (!(color >> i) & 0b1)<<PINS[i];
             GPIO_SET = ((color >> i) & 0b1)<<PINS[i];
         }
-        SLEEP_HALF_T();
         GPIO_CLR = 1 << CLK_PIN;
-        SLEEP_HALF_T();
     }
     return 0;
 
