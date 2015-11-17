@@ -1,7 +1,7 @@
 .PHONY : clean run dummy
 
 CC=gcc
-CFLAGS=-std=c11
+CFLAGS=-std=c99
 
 CAMERASCRIPT=cam_stdout.py
 DUMMYSCRIPT=dummy_stdout.py

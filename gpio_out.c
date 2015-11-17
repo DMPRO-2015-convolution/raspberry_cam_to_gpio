@@ -1,6 +1,6 @@
 #include "rpgpio.h"
 
-#define CLK_PIN 11
+#define CLK_PIN 26
 
 int main(int argc, char **argv)
 {
@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 
     int PINS[] = {
         // bits from least to most significant are mapped to pins numbered
-        9, 10, 22, 27, 17, 4, 3, 2,
+        22, 10, 9, 11, 5, 6, 13, 19,
         CLK_PIN
     };
     int N_PINS = 9;
